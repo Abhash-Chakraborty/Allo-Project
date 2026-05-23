@@ -1,0 +1,530 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   Design tokens
+   ===========================================================================
+   Transactional track: cream canvas, ink type, pill buttons, aloe/pistachio
+   accents. Dark track reserved for the hero band.
+*/
+
+:root {
+  /* ---- Colors -------------------------------------------------------- */
+  --color-ink: #000000;
+  --color-on-primary: #ffffff;
+
+  --color-canvas-night: #000000;
+  --color-canvas-night-elevated: #0a0a0a;
+  --color-canvas-light: #ffffff;
+  --color-canvas-cream: #fbfbf5;
+  --color-surface-elevated-dark: #1e2c31;
+
+  --color-shade-30: #d4d4d8;
+  --color-shade-40: #a1a1aa;
+  --color-shade-50: #71717a;
+  --color-shade-60: #52525b;
+  --color-shade-70: #3f3f46;
+
+  --color-hairline-light: #e4e4e7;
+  --color-hairline-dark: #1e2c31;
+
+  --color-aloe-10: #c1fbd4;
+  --color-pistachio-10: #d4f9e0;
+
+  --color-link-cool-1: #9dabad;
+  --color-link-cool-2: #9797a2;
+  --color-link-cool-3: #bdbdca;
+  --color-link-mint: #99b3ad;
+
+  /* ---- Functional aliases (status, etc.) ---------------------------- */
+  --color-warning-bg: #fef3c7;
+  --color-warning-fg: #78350f;
+  --color-danger-bg: #fee2e2;
+  --color-danger-fg: #7f1d1d;
+  --color-success-bg: var(--color-aloe-10);
+  --color-success-fg: #064e3b;
+
+  /* ---- Radii --------------------------------------------------------- */
+  --rounded-xs: 4px;
+  --rounded-sm: 5px;
+  --rounded-md: 8px;
+  --rounded-lg: 12px;
+  --rounded-xl: 20px;
+  --rounded-pill: 9999px;
+
+  /* ---- Spacing ------------------------------------------------------- */
+  --spacing-xxs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  --spacing-huge: 64px;
+
+  /* ---- Type ---------------------------------------------------------- */
+  --font-display:
+    var(--font-inter), "Helvetica Now Display", Helvetica, Arial, sans-serif;
+  --font-body:
+    var(--font-inter), Inter, Helvetica, Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* ---- Elevation ----------------------------------------------------- */
+  /*  Level 3 — the brand's "stacked tiny shadow" pricing card halo. */
+  --elevation-3:
+    0 8px 8px rgba(0, 0, 0, 0.05),
+    0 4px 4px rgba(0, 0, 0, 0.05),
+    0 2px 2px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+  /*  Level 4 — modal / floating panel on light. */
+  --elevation-4: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  /*  Level 1 — subtle inset top-edge highlight on dark cards. */
+  --elevation-1-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ===========================================================================
+   Tailwind v4 @theme — surface tokens to utility classes (`bg-canvas-cream`,
+   `text-ink`, `rounded-pill`, etc.). Variables are referenced via the alias
+   below so theme switches stay token-driven.
+*/
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --color-ink: var(--color-ink);
+  --color-on-primary: var(--color-on-primary);
+  --color-canvas-night: var(--color-canvas-night);
+  --color-canvas-night-elevated: var(--color-canvas-night-elevated);
+  --color-canvas-light: var(--color-canvas-light);
+  --color-canvas-cream: var(--color-canvas-cream);
+  --color-surface-elevated-dark: var(--color-surface-elevated-dark);
+
+  --color-shade-30: var(--color-shade-30);
+  --color-shade-40: var(--color-shade-40);
+  --color-shade-50: var(--color-shade-50);
+  --color-shade-60: var(--color-shade-60);
+  --color-shade-70: var(--color-shade-70);
+
+  --color-hairline-light: var(--color-hairline-light);
+  --color-hairline-dark: var(--color-hairline-dark);
+
+  --color-aloe-10: var(--color-aloe-10);
+  --color-pistachio-10: var(--color-pistachio-10);
+
+  --color-link-cool-1: var(--color-link-cool-1);
+  --color-link-cool-2: var(--color-link-cool-2);
+  --color-link-cool-3: var(--color-link-cool-3);
+  --color-link-mint: var(--color-link-mint);
+
+  --color-warning-bg: var(--color-warning-bg);
+  --color-warning-fg: var(--color-warning-fg);
+  --color-danger-bg: var(--color-danger-bg);
+  --color-danger-fg: var(--color-danger-fg);
+  --color-success-bg: var(--color-success-bg);
+  --color-success-fg: var(--color-success-fg);
+
+  --radius-xs: var(--rounded-xs);
+  --radius-sm: var(--rounded-sm);
+  --radius-md: var(--rounded-md);
+  --radius-lg: var(--rounded-lg);
+  --radius-xl: var(--rounded-xl);
+  --radius-pill: var(--rounded-pill);
+
+  --shadow-elevation-3: var(--elevation-3);
+  --shadow-elevation-4: var(--elevation-4);
+  --font-heading: var(--font-display);
+}
+
+/* ===========================================================================
+   Base layer — global type defaults.
+*/
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-canvas-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-feature-settings: "ss03";
+  text-rendering: optimizeLegibility;
+}
+
+/* Display roles use thin weight (300). */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-feature-settings: "ss03";
+}
+
+/* ===========================================================================
+   Type-scale utilities — exposed as classes (`text-display-xxl`, `text-body-md`, …)
+   rather than baked into Tailwind because line-height / tracking values are bespoke.
+*/
+.text-display-xxl {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(56px, 8vw, 96px);
+  line-height: 1;
+  letter-spacing: 2.4px;
+}
+.text-display-xl {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(40px, 6vw, 70px);
+  line-height: 1;
+}
+.text-display-lg {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(36px, 5vw, 55px);
+  line-height: 1.16;
+}
+.text-display-md {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.14;
+}
+.text-heading-xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1.28;
+  letter-spacing: 0.42px;
+}
+.text-heading-lg {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.14;
+  letter-spacing: 0.36px;
+}
+.text-heading-md {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+}
+.text-heading-sm {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.25;
+  letter-spacing: 0.72px;
+}
+.text-body-lg {
+  font-family: var(--font-body);
+  font-weight: 550;
+  font-size: 18px;
+  line-height: 1.56;
+}
+.text-body-md {
+  font-family: var(--font-body);
+  font-weight: 420;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.text-body-strong {
+  font-family: var(--font-body);
+  font-weight: 550;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.text-caption {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.49;
+  letter-spacing: 0.28px;
+}
+.text-micro {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -0.13px;
+}
+.text-eyebrow-cap {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.72px;
+  text-transform: uppercase;
+}
+
+/* ===========================================================================
+   Component primitives.
+*/
+
+/* --- Buttons --------------------------------------------------------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  border-radius: var(--rounded-pill);
+  padding: 12px 24px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  white-space: nowrap;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease,
+    transform 120ms ease;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  min-height: 44px;
+}
+.pill:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+.pill:disabled,
+.pill[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pill-primary {
+  background: var(--color-ink);
+  color: var(--color-on-primary);
+}
+.pill-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-shade-70);
+}
+
+.pill-outline-light {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+.pill-outline-light:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-ink);
+  color: var(--color-on-primary);
+}
+
+.pill-outline-dark {
+  background: transparent;
+  color: var(--color-on-primary);
+  border-color: var(--color-on-primary);
+}
+.pill-outline-dark:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--color-on-primary);
+  color: var(--color-ink);
+}
+
+.pill-aloe {
+  background: var(--color-aloe-10);
+  color: var(--color-ink);
+}
+.pill-aloe:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: #b1eec6;
+}
+
+.pill-danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+}
+.pill-danger:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: #fecaca;
+}
+
+/* --- Tag / chip ------------------------------------------------------ */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  border-radius: var(--rounded-pill);
+  padding: 4px 12px;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.72px;
+  text-transform: uppercase;
+}
+.tag-mint {
+  background: var(--color-aloe-10);
+  color: var(--color-ink);
+}
+.tag-shade {
+  background: var(--color-shade-30);
+  color: var(--color-ink);
+}
+.tag-warning {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+}
+.tag-danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+}
+.tag-success {
+  background: var(--color-success-bg);
+  color: var(--color-success-fg);
+}
+
+/* --- Cards ----------------------------------------------------------- */
+.card {
+  background: var(--color-canvas-light);
+  color: var(--color-ink);
+  border-radius: var(--rounded-lg);
+  padding: var(--spacing-xxl);
+  border: 1px solid var(--color-hairline-light);
+  box-shadow: var(--elevation-3);
+}
+.card-pistachio {
+  background: var(--color-pistachio-10);
+  color: var(--color-ink);
+  border-radius: var(--rounded-lg);
+  padding: var(--spacing-xxl);
+}
+.card-cinematic {
+  background: var(--color-canvas-night-elevated);
+  color: var(--color-on-primary);
+  border-radius: var(--rounded-lg);
+  padding: var(--spacing-xxl);
+  box-shadow: var(--elevation-1-inset);
+}
+
+/* --- Form input ------------------------------------------------------ */
+.text-input {
+  display: block;
+  width: 100%;
+  background: var(--color-canvas-light);
+  color: var(--color-ink);
+  border-radius: var(--rounded-md);
+  padding: 10px 12px;
+  border: 1px solid var(--color-hairline-light);
+  font-family: var(--font-body);
+  font-weight: 420;
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 44px;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.text-input:focus-visible {
+  outline: none;
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+/* --- Hairline divider ------------------------------------------------- */
+.hairline {
+  height: 1px;
+  background: var(--color-hairline-light);
+  border: 0;
+}
+
+/* --- A11y skip link -------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 1000;
+  padding: 12px 24px;
+  background: var(--color-ink);
+  color: var(--color-on-primary);
+  border-radius: var(--rounded-pill);
+}
+
+/* --- Modal scrim ----------------------------------------------------- */
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  z-index: 50;
+}
+.modal-panel {
+  background: var(--color-canvas-light);
+  color: var(--color-ink);
+  border-radius: var(--rounded-lg);
+  padding: var(--spacing-xxl);
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--elevation-4);
+  border: 1px solid var(--color-hairline-light);
+}
+
+/* --- Spinner --------------------------------------------------------- */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Stable selection --------------------------------------------------- */
+::selection {
+  background: var(--color-aloe-10);
+  color: var(--color-ink);
+}
+
+/* --- Custom scrollbar ------------------------------------------------ */
+/* Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-canvas-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-shade-40);
+  border-radius: var(--rounded-pill);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-shade-60);
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-shade-40) var(--color-canvas-cream);
+}
+
+/* --- Docs / Markdown prose ------------------------------------------ */
+.prose-allo { color: var(--color-ink); }
+.prose-allo h1 { font-family: var(--font-display); font-weight: 300; font-size: clamp(32px,4vw,48px); line-height: 1.14; margin: 0 0 1.5rem; }
+.prose-allo h2 { font-family: var(--font-display); font-weight: 400; font-size: 28px; line-height: 1.28; margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--color-hairline-light); }
+.prose-allo h3 { font-family: var(--font-display); font-weight: 500; font-size: 20px; line-height: 1.4; margin: 2rem 0 0.75rem; }
+.prose-allo p { font-size: 16px; font-weight: 420; line-height: 1.7; margin: 0 0 1rem; color: var(--color-shade-60); }
+.prose-allo a { color: var(--color-ink); text-decoration: underline; text-underline-offset: 3px; }
+.prose-allo a:hover { color: var(--color-shade-60); }
+.prose-allo strong { font-weight: 600; color: var(--color-ink); }
+.prose-allo code { font-family: var(--font-mono); font-size: 13px; background: var(--color-shade-30); padding: 2px 6px; border-radius: 4px; }
+.prose-allo pre { background: var(--color-canvas-night); color: var(--color-on-primary); border-radius: var(--rounded-lg); padding: 1.25rem 1.5rem; overflow-x: auto; margin: 1.5rem 0; }
+.prose-allo pre code { background: none; padding: 0; font-size: 13px; color: inherit; }
+.prose-allo ul, .prose-allo ol { padding-left: 1.5rem; margin: 0 0 1rem; }
+.prose-allo li { font-size: 16px; font-weight: 420; line-height: 1.7; color: var(--color-shade-60); margin-bottom: 0.25rem; }
+.prose-allo table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 14px; }
+.prose-allo th { background: var(--color-canvas-light); font-weight: 600; text-align: left; padding: 10px 12px; border: 1px solid var(--color-hairline-light); }
+.prose-allo td { padding: 10px 12px; border: 1px solid var(--color-hairline-light); color: var(--color-shade-60); }
+.prose-allo tr:nth-child(even) td { background: var(--color-canvas-cream); }
+.prose-allo blockquote { border-left: 3px solid var(--color-shade-30); padding-left: 1rem; margin: 1.5rem 0; color: var(--color-shade-50); font-style: italic; }
+.prose-allo hr { border: 0; border-top: 1px solid var(--color-hairline-light); margin: 2rem 0; }
