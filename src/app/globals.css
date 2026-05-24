@@ -493,7 +493,7 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-canvas-cream);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-shade-40);
@@ -505,7 +505,7 @@ body {
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-shade-40) var(--color-canvas-cream);
+  scrollbar-color: var(--color-shade-40) transparent;
 }
 
 /* --- Docs / Markdown prose ------------------------------------------ */

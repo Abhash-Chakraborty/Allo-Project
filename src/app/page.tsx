@@ -28,7 +28,7 @@ export default async function HomePage() {
 
       {/* ── Cinematic hero ─────────────────────────────────────────── */}
       <section className="bg-canvas-night text-on-primary min-h-[calc(100vh-64px)] flex items-center">
-        <div className="mx-auto max-w-[1440px] px-6 py-24 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="mx-auto max-w-[1440px] px-6 py-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left */}
           <div>
             <p className="text-eyebrow-cap text-link-cool-3 mb-8 tracking-widest uppercase">

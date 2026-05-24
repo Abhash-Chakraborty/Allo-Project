@@ -1,7 +1,8 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { Breadcrumb } from "@/components/breadcrumb";
 
-export const metadata = { title: "Guide · Allo" };
+export const metadata = { title: "Guide" };
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -50,12 +51,10 @@ export default function GuidePage() {
       <SiteHeader />
       <main id="main" className="bg-canvas-cream text-ink">
         {/* Hero band */}
-        <div className="bg-canvas-night text-on-primary py-16 px-6">
+        <div className="bg-canvas-night text-on-primary py-12 px-6">
           <div className="mx-auto max-w-[860px]">
-            <p className="text-eyebrow-cap text-link-cool-3 mb-4 tracking-widest uppercase">
-              Engineering Guide
-            </p>
-            <h1 className="text-display-xl mb-6">How Allo was built</h1>
+            <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Guide" }]} />
+            <h1 className="text-display-lg mb-4">How Allo was built</h1>
             <p className="text-body-lg text-link-cool-3 max-w-2xl">
               A walkthrough of every problem the assignment posed, the approach I took,
               and the specific decisions that make the solution correct under concurrency.
@@ -63,7 +62,7 @@ export default function GuidePage() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-[860px] px-6 py-20">
+        <div className="mx-auto max-w-[860px] px-6 py-12 md:py-16">
 
           {/* ── 1. Data model ─────────────────────────────────────────── */}
           <Section title="1. Data model for inventory and reservations">

@@ -2,6 +2,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { Breadcrumb } from "@/components/breadcrumb";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -35,8 +36,8 @@ export default async function DocsPage() {
         {/* Hero band */}
         <div className="bg-canvas-night text-on-primary">
           <div className="mx-auto max-w-[860px] px-6 py-12">
-            <p className="text-eyebrow-cap text-link-cool-3 mb-4 uppercase tracking-widest">Documentation</p>
-            <h1 className="text-display-md">Allo — Project Docs</h1>
+            <Breadcrumb crumbs={[{ label: "Home", href: "/" }, { label: "Docs" }]} />
+            <h1 className="text-display-lg">Allo — Project Docs</h1>
             <p className="text-body-lg text-link-cool-3 mt-4 max-w-xl">
               Architecture, API reference, concurrency model, and setup guide.
               Source on{" "}

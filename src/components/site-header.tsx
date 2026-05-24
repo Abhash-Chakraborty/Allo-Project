@@ -68,6 +68,9 @@ export function SiteHeader({ className }: { className?: string }) {
           <Link href="/guide" className="text-link-cool-3 hover:text-on-primary transition-colors">
             Guide
           </Link>
+          <Link href="/resume" className="text-link-cool-3 hover:text-on-primary transition-colors">
+            Resume
+          </Link>
         </nav>
 
         {/* GitHub CTA */}
