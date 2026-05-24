@@ -183,3 +183,4 @@ For other hosts: replace `vercel.json` cron with any scheduler hitting the same 
 - **No RLS.** The anon Supabase key can read everything. Necessary for realtime to work without auth; in production every table would have RLS policies.
 - **No tests.** A production PR would include a Postgres-level concurrency test (spawn 10 connections, fire 10 `reserve_units` for the last unit, assert exactly 1 succeeds) and Playwright tests for the user flow.
 - **Idempotency key cleanup.** Keys live forever in this demo. Production would prune rows older than 24 h using the `idempotency_keys_created_idx` index.
+
