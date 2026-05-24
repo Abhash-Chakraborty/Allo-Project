@@ -1,3 +1,4 @@
+// Docs page - renders README from GitHub
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
