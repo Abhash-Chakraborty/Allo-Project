@@ -8,7 +8,7 @@ import { motion } from "motion/react";
 import { formatPrice } from "@/lib/format";
 import type { ProductDTO } from "@/lib/types";
 
-const PAGE_SIZE = 21;
+const PAGE_SIZE = 21; // items per page
 
 export function ProductGrid({ products }: { products: ProductDTO[] }) {
   const [visible, setVisible] = useState(PAGE_SIZE);
