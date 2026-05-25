@@ -28,9 +28,9 @@ export default async function HomePage() {
 
       {/* ── Cinematic hero ─────────────────────────────────────────── */}
       <section className="bg-canvas-night text-on-primary min-h-[calc(100vh-64px)] flex items-center">
-        <div className="mx-auto max-w-[1440px] px-6 py-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="mx-auto max-w-[1440px] px-6 py-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left */}
-          <div>
+          <div className="order-2 lg:order-1">
             <p className="text-eyebrow-cap text-link-cool-3 mb-8 tracking-widest uppercase">
               Inventory · Reservations · Multi-warehouse
             </p>
@@ -49,14 +49,15 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          {/* Right — animated ASCII video */}
-          <div className="hidden lg:flex items-center justify-end">
+          {/* Right — animated ASCII video (visible on all sizes) */}
+          <div className="order-1 lg:order-2 flex flex-col items-center justify-center lg:justify-end">
             <VideoAscii
               src="/hero.mp4"
               resolution={130}
               backgroundColor="#000000"
-              className="w-full max-w-[520px] aspect-square rounded-lg overflow-hidden"
+              className="w-full max-w-[240px] sm:max-w-[320px] lg:max-w-[520px] aspect-square rounded-xl overflow-hidden ring-1 ring-white/10 shadow-[0_0_60px_rgba(255,255,255,0.04)]"
             />
+            <p className="text-micro text-link-cool-3/60 mt-3 lg:hidden tracking-wide uppercase">Live ASCII render</p>
           </div>
         </div>
       </section>

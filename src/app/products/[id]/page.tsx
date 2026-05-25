@@ -49,7 +49,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[id]
   return (
     <>
       <SiteHeader />
-      <main id="main" className="bg-canvas-cream flex-1">
+      <main id="main" className="bg-canvas-cream flex-1 pb-24 lg:pb-0">
         <div className="mx-auto max-w-[1440px] px-6 py-10 md:py-14">
 
           {/* Breadcrumb */}
@@ -107,7 +107,8 @@ export default async function ProductDetailPage(props: PageProps<"/products/[id]
                   <div className="px-4 py-3 bg-canvas-light border-b border-hairline-light">
                     <p className="text-caption text-shade-60 uppercase tracking-widest">Availability by location</p>
                   </div>
-                  <table className="w-full text-caption">
+                  <div className="overflow-x-auto">
+                  <table className="w-full text-caption min-w-[480px]">
                     <thead className="bg-canvas-cream">
                       <tr className="text-left text-shade-60">
                         <th className="px-4 py-2.5 font-medium">Warehouse</th>
@@ -129,6 +130,7 @@ export default async function ProductDetailPage(props: PageProps<"/products/[id]
                       ))}
                     </tbody>
                   </table>
+                  </div>
                 </div>
 
                 {/* Product details */}
@@ -154,33 +156,33 @@ export default async function ProductDetailPage(props: PageProps<"/products/[id]
               </div>
             </div>
 
-            {/* RIGHT: sticky reserve panel */}
-            <div className="lg:sticky lg:top-8 lg:self-start">
-              <div className="card flex flex-col gap-5 p-6 min-h-[600px]">
+            {/* RIGHT: sticky reserve panel (desktop only) */}
+            <div className="hidden lg:block lg:sticky lg:top-8 lg:self-start">
+              <div className="card flex flex-col gap-5 p-6">
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-shade-30">
-                {product.image_url && (
-                  <Image
-                    src={product.image_url}
-                    alt={product.name}
-                    fill
-                    sizes="(min-width: 1024px) 60vw, 100vw"
-                    className="object-cover"
-                    priority
-                  />
-                )}
-              </div>
+                  {product.image_url && (
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      fill
+                      sizes="380px"
+                      className="object-cover"
+                      priority
+                    />
+                  )}
+                </div>
                 <div>
                   <p className="text-eyebrow-cap text-shade-50 mb-2 uppercase tracking-widest">{product.sku}</p>
                   <h2 className="text-heading-lg mb-1">{product.name}</h2>
                   {product.description && (
-                  <p className="text-body-sm text-shade-50 mb-3">{product.description}</p>
+                    <p className="text-body-sm text-shade-50 mb-3">{product.description}</p>
                   )}
                   <p className="text-heading-md text-shade-50 mt-1 tabular-nums">
                     {formatPrice(product.price_cents)}
                   </p>
                 </div>
-                <div className="flex-col absolute bottom-10">
-                  <div className="flex flex-wrap gap-2 mb-3">
+                <div className="mt-auto flex flex-col gap-3">
+                  <div className="flex flex-wrap gap-2">
                     <span className="tag tag-mint">Sold by Allo</span>
                     <span className={allOutOfStock ? "tag tag-danger" : "tag tag-mint"}>
                       {allOutOfStock ? "Out of stock" : `${totalAvailable} available`}
@@ -189,6 +191,15 @@ export default async function ProductDetailPage(props: PageProps<"/products/[id]
                   <ReserveButton product={product} />
                 </div>
               </div>
+            </div>
+
+            {/* MOBILE: fixed bottom reserve bar */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-canvas-light border-t border-hairline-light px-4 py-3 flex items-center justify-between gap-4 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+              <div className="flex flex-col min-w-0">
+                <p className="text-body-strong truncate">{product.name}</p>
+                <p className="text-heading-md tabular-nums">{formatPrice(product.price_cents)}</p>
+              </div>
+              <ReserveButton product={product} />
             </div>
           </div>
 

@@ -1,5 +1,7 @@
-// Site header component
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import clsx from "clsx";
 
 function AlloLogo({ className }: { className?: string }) {
@@ -11,7 +13,6 @@ function AlloLogo({ className }: { className?: string }) {
       className={className}
       aria-hidden="true"
     >
-      {/* Arrow mark — right-pointing chevron */}
       <path
         d="M4 20 L12 14 L4 8"
         stroke="currentColor"
@@ -27,14 +28,9 @@ function AlloLogo({ className }: { className?: string }) {
         strokeLinejoin="round"
         opacity="0.45"
       />
-      {/* ALLO wordmark */}
-      {/* A */}
       <path d="M26 22 L31 6 L36 22 M27.5 16 H34.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      {/* L */}
       <path d="M40 6 L40 22 L46 22" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      {/* L */}
       <path d="M50 6 L50 22 L56 22" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      {/* O */}
       <rect x="60" y="10" width="12" height="12" rx="6" stroke="currentColor" strokeWidth="1.4"/>
     </svg>
   );
@@ -48,7 +44,16 @@ function GitHubIcon({ className }: { className?: string }) {
   );
 }
 
+const NAV_LINKS = [
+  { href: "/products", label: "Products" },
+  { href: "/docs", label: "Docs" },
+  { href: "/guide", label: "Guide" },
+  { href: "/resume", label: "Resume" },
+];
+
 export function SiteHeader({ className }: { className?: string }) {
+  const [open, setOpen] = useState(false);
+
   return (
     <header className={clsx("w-full bg-canvas-night text-on-primary", className)}>
       <div className="mx-auto max-w-[1440px] flex items-center justify-between px-6 py-4">
@@ -57,32 +62,67 @@ export function SiteHeader({ className }: { className?: string }) {
           <AlloLogo className="h-7 w-24 text-on-primary" />
         </Link>
 
-        {/* Nav */}
+        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8 text-body-md">
-          <Link href="/products" className="text-link-cool-3 hover:text-on-primary transition-colors">
-            Products
-          </Link>
-          <Link href="/docs" className="text-link-cool-3 hover:text-on-primary transition-colors">
-            Docs
-          </Link>
-          <Link href="/guide" className="text-link-cool-3 hover:text-on-primary transition-colors">
-            Guide
-          </Link>
-          <Link href="/resume" className="text-link-cool-3 hover:text-on-primary transition-colors">
-            Resume
-          </Link>
+          {NAV_LINKS.map(({ href, label }) => (
+            <Link key={href} href={href} className="text-link-cool-3 hover:text-on-primary transition-colors">
+              {label}
+            </Link>
+          ))}
         </nav>
 
-        {/* GitHub CTA */}
-        <a
-          href="https://github.com/Abhash-Chakraborty/Allo-Project"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="pill pill-outline-dark flex items-center gap-2 text-body-md"
-        >
-          <GitHubIcon className="h-4 w-4" />
-          GitHub
-        </a>
+        {/* Right side */}
+        <div className="flex items-center gap-3">
+          <a
+            href="https://github.com/Abhash-Chakraborty/Allo-Project"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pill pill-outline-dark flex items-center gap-2 text-body-md"
+          >
+            <GitHubIcon className="h-4 w-4" />
+            <span className="hidden sm:inline">GitHub</span>
+          </a>
+
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-[5px]"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+          >
+            <span className={clsx("block w-5 h-[2px] bg-on-primary rounded transition-transform duration-200", open && "translate-y-[7px] rotate-45")} />
+            <span className={clsx("block w-5 h-[2px] bg-on-primary rounded transition-opacity duration-200", open && "opacity-0")} />
+            <span className={clsx("block w-5 h-[2px] bg-on-primary rounded transition-transform duration-200", open && "-translate-y-[7px] -rotate-45")} />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div
+          className="md:hidden fixed inset-0 top-[60px] z-40 bg-black/50 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+      <div
+        className={clsx(
+          "md:hidden overflow-hidden transition-[max-height] duration-300 ease-in-out relative z-50",
+          open ? "max-h-64" : "max-h-0"
+        )}
+      >
+        <nav className="flex flex-col px-6 pb-6 gap-1">
+          {NAV_LINKS.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setOpen(false)}
+              className="text-link-cool-3 hover:text-on-primary transition-colors py-3 border-b border-white/10 text-body-md"
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </header>
   );
