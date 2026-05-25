@@ -1,11 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "crons": [
-    {
-      "path": "/api/cron/expire-reservations",
-      "schedule": "0 0 * * *"
-    }
-  ],
   "headers": [
     {
       "source": "/hero.mp4",

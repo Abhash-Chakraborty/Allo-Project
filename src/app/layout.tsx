@@ -24,8 +24,8 @@ export const metadata: Metadata = {
   applicationName: "Allo",
   authors: [{ name: "Abhash Chakraborty" }],
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
   },
   openGraph: {
     title: "Allo — Reserved Inventory",

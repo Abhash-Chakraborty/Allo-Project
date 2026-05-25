@@ -1,4 +1,6 @@
 // Docs page - renders README from GitHub
+import type { ComponentPropsWithoutRef } from "react";
+
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -57,7 +59,20 @@ export default async function DocsPage() {
         {/* README content */}
         <div className="mx-auto max-w-[860px] px-6 py-12 md:py-16">
           <div className="prose-allo">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                // Wrap every table in a horizontal-scroll container so wide
+                // API tables don't overflow the page on narrow screens.
+                table: (props: ComponentPropsWithoutRef<"table">) => (
+                  <div className="prose-allo-table-wrap">
+                    <table {...props} />
+                  </div>
+                ),
+              }}
+            >
+              {content}
+            </ReactMarkdown>
           </div>
         </div>
       </main>

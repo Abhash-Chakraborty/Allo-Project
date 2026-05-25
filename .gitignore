@@ -42,3 +42,9 @@ yarn-error.log*
 next-env.d.ts
 .agents/
 .kiro/
+
+# Migration scratch files (never commit DB credentials or data dumps)
+.supabase-pwd
+data-backup.sql
+supabase/.temp/
+supabase/backups/

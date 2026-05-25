@@ -142,6 +142,7 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -151,6 +152,47 @@ body {
   font-feature-settings: "ss03";
   text-rendering: optimizeLegibility;
 }
+
+/* Respect users who'd rather not see motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===========================================================================
+   Subtle entrance animations — applied via class so server components can
+   opt in without needing `motion/react`.
+*/
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-fade-in {
+  animation: fade-in 0.45s ease-out both;
+}
+
+/* Stagger helpers — pair with .animate-fade-in-up on siblings. */
+.delay-50  { animation-delay: 50ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
 
 /* Display roles use thin weight (300). */
 .font-display {
@@ -339,6 +381,58 @@ body {
   background: #fecaca;
 }
 
+/* Subtle press feedback on every pill — pairs with the existing
+   color/border transition declared on `.pill`. */
+.pill:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: scale(0.98);
+}
+
+/* --- Header nav links — animated underline on hover ----------------- */
+.nav-link {
+  position: relative;
+  color: var(--color-link-cool-3);
+  transition: color 200ms ease;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link:hover {
+  color: var(--color-on-primary);
+}
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 767px) {
+  .site-header-github {
+    min-height: 38px;
+    padding: 8px 14px;
+    gap: 6px;
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .site-header-github svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .site-header-menu-button {
+    width: 38px;
+    height: 38px;
+  }
+}
+
 /* --- Tag / chip ------------------------------------------------------ */
 .tag {
   display: inline-flex;
@@ -382,6 +476,9 @@ body {
   padding: var(--spacing-xxl);
   border: 1px solid var(--color-hairline-light);
   box-shadow: var(--elevation-3);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .card-pistachio {
   background: var(--color-pistachio-10);
@@ -522,8 +619,17 @@ body {
 .prose-allo pre code { background: none; padding: 0; font-size: 13px; color: inherit; }
 .prose-allo ul, .prose-allo ol { padding-left: 1.5rem; margin: 0 0 1rem; }
 .prose-allo li { font-size: 16px; font-weight: 420; line-height: 1.7; color: var(--color-shade-60); margin-bottom: 0.25rem; }
+.prose-allo-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border-radius: var(--rounded-md);
+  -webkit-overflow-scrolling: touch;
+}
+.prose-allo-table-wrap > table { margin: 0; }
 .prose-allo table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 14px; }
-.prose-allo th { background: var(--color-canvas-light); font-weight: 600; text-align: left; padding: 10px 12px; border: 1px solid var(--color-hairline-light); }
+.prose-allo th { background: var(--color-canvas-light); font-weight: 600; text-align: left; padding: 10px 12px; border: 1px solid var(--color-hairline-light); white-space: nowrap; }
 .prose-allo td { padding: 10px 12px; border: 1px solid var(--color-hairline-light); color: var(--color-shade-60); }
 .prose-allo tr:nth-child(even) td { background: var(--color-canvas-cream); }
 .prose-allo blockquote { border-left: 3px solid var(--color-shade-30); padding-left: 1rem; margin: 1.5rem 0; color: var(--color-shade-50); font-style: italic; }

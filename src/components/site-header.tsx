@@ -1,6 +1,11 @@
+"use client";
+
 // Site header component
 import Link from "next/link";
 import clsx from "clsx";
+import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
 
 function AlloLogo({ className }: { className?: string }) {
   return (
@@ -49,6 +54,8 @@ function GitHubIcon({ className }: { className?: string }) {
 }
 
 export function SiteHeader({ className }: { className?: string }) {
+  const [open, setOpen] = useState(false);
+
   return (
     <header className={clsx("w-full bg-canvas-night text-on-primary", className)}>
       <div className="mx-auto max-w-[1440px] flex items-center justify-between px-6 py-4">
@@ -59,31 +66,89 @@ export function SiteHeader({ className }: { className?: string }) {
 
         {/* Nav */}
         <nav className="hidden md:flex items-center gap-8 text-body-md">
-          <Link href="/products" className="text-link-cool-3 hover:text-on-primary transition-colors">
+          <Link href="/products" className="nav-link">
             Products
           </Link>
-          <Link href="/docs" className="text-link-cool-3 hover:text-on-primary transition-colors">
+          <Link href="/docs" className="nav-link">
             Docs
           </Link>
-          <Link href="/guide" className="text-link-cool-3 hover:text-on-primary transition-colors">
+          <Link href="/guide" className="nav-link">
             Guide
           </Link>
-          <Link href="/resume" className="text-link-cool-3 hover:text-on-primary transition-colors">
+          <Link href="/resume" className="nav-link">
             Resume
           </Link>
         </nav>
 
-        {/* GitHub CTA */}
-        <a
-          href="https://github.com/Abhash-Chakraborty/Allo-Project"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="pill pill-outline-dark flex items-center gap-2 text-body-md"
-        >
-          <GitHubIcon className="h-4 w-4" />
-          GitHub
-        </a>
+        <div className="flex items-center gap-2">
+          {/* GitHub CTA — desktop only; the mobile drawer keeps the bar uncluttered */}
+          <a
+            href="https://github.com/Abhash-Chakraborty/Allo-Project"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="pill pill-outline-dark site-header-github hidden md:inline-flex items-center gap-2 text-body-md"
+          >
+            <GitHubIcon className="h-4 w-4" />
+            GitHub
+          </a>
+
+          <button
+            type="button"
+            className="site-header-menu-button md:hidden inline-flex h-11 w-11 items-center justify-center rounded-pill border border-on-primary text-on-primary transition-colors duration-200 hover:bg-on-primary hover:text-ink"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={open ? "close" : "menu"}
+                initial={{ opacity: 0, rotate: -12, scale: 0.92 }}
+                animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                exit={{ opacity: 0, rotate: 12, scale: 0.92 }}
+                transition={{ duration: 0.16, ease: "easeOut" }}
+              >
+                {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </motion.span>
+            </AnimatePresence>
+          </button>
+        </div>
       </div>
+
+      <AnimatePresence initial={false}>
+        {open ? (
+          <motion.div
+            className="md:hidden overflow-hidden border-t border-hairline-dark bg-canvas-night"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            <nav className="mx-auto flex max-w-[1440px] flex-col gap-1 px-6 py-4 text-body-md">
+              {[
+                { href: "/products", label: "Products" },
+                { href: "/docs", label: "Docs" },
+                { href: "/guide", label: "Guide" },
+                { href: "/resume", label: "Resume" },
+              ].map((item, index) => (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.16, delay: index * 0.025 }}
+                >
+                  <Link
+                    href={item.href}
+                    className="block rounded-md px-1 py-3 text-link-cool-3 transition-colors duration-200 hover:text-on-primary"
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

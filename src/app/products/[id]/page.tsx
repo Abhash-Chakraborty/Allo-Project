@@ -107,28 +107,30 @@ export default async function ProductDetailPage(props: PageProps<"/products/[id]
                   <div className="px-4 py-3 bg-canvas-light border-b border-hairline-light">
                     <p className="text-caption text-shade-60 uppercase tracking-widest">Availability by location</p>
                   </div>
-                  <table className="w-full text-caption">
-                    <thead className="bg-canvas-cream">
-                      <tr className="text-left text-shade-60">
-                        <th className="px-4 py-2.5 font-medium">Warehouse</th>
-                        <th className="px-4 py-2.5 font-medium">Location</th>
-                        <th className="px-4 py-2.5 font-medium">ETA</th>
-                        <th className="px-4 py-2.5 font-medium text-right">Units</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {product.stock.map((s) => (
-                        <tr key={s.warehouse.id} className="border-t border-hairline-light">
-                          <td className="px-4 py-3 text-body-strong">{s.warehouse.name}</td>
-                          <td className="px-4 py-3 text-shade-60">{s.warehouse.location ?? s.warehouse.code}</td>
-                          <td className="px-4 py-3 text-shade-60">{etaLabel(s.warehouse.location)}</td>
-                          <td className={`px-4 py-3 text-right tabular-nums font-medium ${s.available_units === 0 ? "text-danger-fg" : "text-ink"}`}>
-                            {s.available_units}
-                          </td>
+                  <div className="overflow-x-auto">
+                    <table className="w-full min-w-[480px] text-caption">
+                      <thead className="bg-canvas-cream">
+                        <tr className="text-left text-shade-60">
+                          <th className="px-4 py-2.5 font-medium">Warehouse</th>
+                          <th className="px-4 py-2.5 font-medium">Location</th>
+                          <th className="px-4 py-2.5 font-medium">ETA</th>
+                          <th className="px-4 py-2.5 font-medium text-right">Units</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {product.stock.map((s) => (
+                          <tr key={s.warehouse.id} className="border-t border-hairline-light">
+                            <td className="px-4 py-3 text-body-strong whitespace-nowrap">{s.warehouse.name}</td>
+                            <td className="px-4 py-3 text-shade-60 whitespace-nowrap">{s.warehouse.location ?? s.warehouse.code}</td>
+                            <td className="px-4 py-3 text-shade-60 whitespace-nowrap">{etaLabel(s.warehouse.location)}</td>
+                            <td className={`px-4 py-3 text-right tabular-nums font-medium ${s.available_units === 0 ? "text-danger-fg" : "text-ink"}`}>
+                              {s.available_units}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 {/* Product details */}
@@ -156,31 +158,31 @@ export default async function ProductDetailPage(props: PageProps<"/products/[id]
 
             {/* RIGHT: sticky reserve panel */}
             <div className="lg:sticky lg:top-8 lg:self-start">
-              <div className="card flex flex-col gap-5 p-6 min-h-[600px]">
+              <div className="card flex flex-col gap-5 p-6 lg:min-h-[600px]">
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-shade-30">
-                {product.image_url && (
-                  <Image
-                    src={product.image_url}
-                    alt={product.name}
-                    fill
-                    sizes="(min-width: 1024px) 60vw, 100vw"
-                    className="object-cover"
-                    priority
-                  />
-                )}
-              </div>
+                  {product.image_url && (
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      fill
+                      sizes="(min-width: 1024px) 60vw, 100vw"
+                      className="object-cover"
+                      priority
+                    />
+                  )}
+                </div>
                 <div>
                   <p className="text-eyebrow-cap text-shade-50 mb-2 uppercase tracking-widest">{product.sku}</p>
                   <h2 className="text-heading-lg mb-1">{product.name}</h2>
                   {product.description && (
-                  <p className="text-body-sm text-shade-50 mb-3">{product.description}</p>
+                    <p className="text-body-sm text-shade-50 mb-3">{product.description}</p>
                   )}
                   <p className="text-heading-md text-shade-50 mt-1 tabular-nums">
                     {formatPrice(product.price_cents)}
                   </p>
                 </div>
-                <div className="flex-col absolute bottom-10">
-                  <div className="flex flex-wrap gap-2 mb-3">
+                <div className="mt-auto flex flex-col gap-3">
+                  <div className="flex flex-wrap gap-2">
                     <span className="tag tag-mint">Sold by Allo</span>
                     <span className={allOutOfStock ? "tag tag-danger" : "tag tag-mint"}>
                       {allOutOfStock ? "Out of stock" : `${totalAvailable} available`}

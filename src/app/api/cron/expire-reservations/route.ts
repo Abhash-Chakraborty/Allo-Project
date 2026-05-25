@@ -8,17 +8,20 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 /**
- * Vercel Cron entrypoint.
+ * Manual reservation-expiry endpoint.
  *
- *   Invocation: GET /api/cron/expire-reservations
- *   Schedule:   every minute (see vercel.json)
+ *   Invocation: GET|POST /api/cron/expire-reservations
+ *   Auth:       Authorization: Bearer ${CRON_SECRET}
  *
- * Vercel sends the request with `Authorization: Bearer ${CRON_SECRET}`,
- * which we verify before doing any work — this prevents random visitors
- * from triggering bulk inventory rewrites.
+ * Primary expiry runs *inside Postgres* via Supabase `pg_cron`
+ * (see `supabase/migrations/0004_cron.sql`) every minute, which is the
+ * only viable schedule on Vercel's free tier (limited to one cron / day).
  *
- * On every tick we call the `expire_reservations()` Postgres function
- * which returns the number of reservations transitioned to `expired`.
+ * This HTTP route stays as a manual escape hatch — useful for one-off
+ * sweeps from a terminal (`curl -H "Authorization: Bearer $CRON_SECRET" …`)
+ * or for any external scheduler that wants to nudge expiry without
+ * waiting for the next pg_cron tick. It calls the same
+ * `expire_reservations()` Postgres function.
  */
 async function handle(request: NextRequest) {
   if (!cronSecret) {
@@ -49,8 +52,23 @@ async function handle(request: NextRequest) {
     if (error) throw apiErrorFromPgError(error);
     const expired = typeof data === "number" ? data : 0;
 
+    const now = new Date();
     return NextResponse.json(
-      { expired, ran_at: new Date().toISOString() },
+      {
+        expired,
+        // Machine-readable UTC for clients/log-shippers, plus IST for humans.
+        ran_at: now.toISOString(),
+        ran_at_ist: `${new Intl.DateTimeFormat("en-IN", {
+          timeZone: "Asia/Kolkata",
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        }).format(now)} IST`,
+      },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (err) {

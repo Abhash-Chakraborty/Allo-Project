@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import clsx from "clsx";
 
-import { formatCountdown, formatPrice, newIdempotencyKey } from "@/lib/format";
+import { formatCountdown, formatDateTimeIST, formatPrice, formatTimeIST, newIdempotencyKey } from "@/lib/format";
 import { getSupabaseBrowser } from "@/lib/supabase/browser";
 import type {
   ProductDTO,
@@ -294,25 +294,25 @@ export function ReservationView({
             <dt>id</dt>
             <dd className="break-all">{reservation.id}</dd>
             <dt>created</dt>
-            <dd>{new Date(reservation.created_at).toLocaleString()}</dd>
+            <dd>{formatDateTimeIST(reservation.created_at)}</dd>
             <dt>expires</dt>
-            <dd>{new Date(reservation.expires_at).toLocaleString()}</dd>
+            <dd>{formatDateTimeIST(reservation.expires_at)}</dd>
             {reservation.confirmed_at ? (
               <>
                 <dt>confirmed</dt>
-                <dd>{new Date(reservation.confirmed_at).toLocaleString()}</dd>
+                <dd>{formatDateTimeIST(reservation.confirmed_at)}</dd>
               </>
             ) : null}
             {reservation.released_at ? (
               <>
                 <dt>released</dt>
-                <dd>{new Date(reservation.released_at).toLocaleString()}</dd>
+                <dd>{formatDateTimeIST(reservation.released_at)}</dd>
               </>
             ) : null}
             {reservation.expired_at ? (
               <>
                 <dt>expired</dt>
-                <dd>{new Date(reservation.expired_at).toLocaleString()}</dd>
+                <dd>{formatDateTimeIST(reservation.expired_at)}</dd>
               </>
             ) : null}
           </dl>
@@ -392,7 +392,7 @@ function CountdownPanel({
         {display}
       </p>
       <p className="text-caption text-shade-60">
-        Expires at {new Date(expiresAt).toLocaleTimeString()}
+        Expires at {formatTimeIST(expiresAt)}
       </p>
     </div>
   );
@@ -411,7 +411,7 @@ function TerminalPanel({ reservation }: { reservation: ReservationDTO }) {
       </p>
       {date ? (
         <p className="text-caption text-shade-60">
-          {new Date(date).toLocaleString()}
+          {formatDateTimeIST(date)}
         </p>
       ) : null}
     </div>
