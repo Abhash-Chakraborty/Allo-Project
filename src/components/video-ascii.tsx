@@ -1,3 +1,4 @@
+// Video to ASCII renderer
 "use client";
 
 import { useEffect, useRef, useState } from "react";
