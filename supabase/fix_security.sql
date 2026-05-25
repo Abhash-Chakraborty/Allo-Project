@@ -15,3 +15,4 @@ as
 
 -- Fix 2 & 3: Revoke EXECUTE on rls_auto_enable from anon and authenticated
 revoke execute on function public.rls_auto_enable() from anon, authenticated, public;
+-- security fixes applied
