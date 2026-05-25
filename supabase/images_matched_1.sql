@@ -42,3 +42,4 @@ UPDATE public.products SET image_url = 'https://images.unsplash.com/photo-160824
 
 -- Desk
 UPDATE public.products SET image_url = 'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&w=800&q=80' WHERE sku = 'ALO-DSK-01'; -- standing desk
+-- images matched
