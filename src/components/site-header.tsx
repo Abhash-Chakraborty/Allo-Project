@@ -118,10 +118,10 @@ export function SiteHeader({ className }: { className?: string }) {
         {open ? (
           <motion.div
             className="md:hidden overflow-hidden border-t border-hairline-dark bg-canvas-night"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.14, ease: "easeOut" }}
           >
             <nav className="mx-auto flex max-w-[1440px] flex-col gap-1 px-6 py-4 text-body-md">
               {[
@@ -129,21 +129,15 @@ export function SiteHeader({ className }: { className?: string }) {
                 { href: "/docs", label: "Docs" },
                 { href: "/guide", label: "Guide" },
                 { href: "/resume", label: "Resume" },
-              ].map((item, index) => (
-                <motion.div
+              ].map((item) => (
+                <Link
                   key={item.href}
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.16, delay: index * 0.025 }}
+                  href={item.href}
+                  className="block rounded-md px-1 py-3 text-link-cool-3 transition-colors duration-150 hover:text-on-primary"
+                  onClick={() => setOpen(false)}
                 >
-                  <Link
-                    href={item.href}
-                    className="block rounded-md px-1 py-3 text-link-cool-3 transition-colors duration-200 hover:text-on-primary"
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                </motion.div>
+                  {item.label}
+                </Link>
               ))}
             </nav>
           </motion.div>

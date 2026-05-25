@@ -1,4 +1,3 @@
-// Video to ASCII renderer
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -44,32 +43,37 @@ export function VideoAscii({
     const dCtx = display.getContext("2d");
     if (!sCtx || !dCtx) return;
 
-    const layout = () => {
-      const rect = wrap.getBoundingClientRect();
+    function layout() {
+      const rect = wrap!.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
-      if (!w || !h) return;
+      if (!w || !h) return false; // not yet visible
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const cols = resolution;
       const rows = Math.max(8, Math.round(cols * CHAR_ASPECT));
 
-      sample.width = cols;
-      sample.height = rows;
+      sample!.width = cols;
+      sample!.height = rows;
 
-      display.width = Math.round(w * dpr);
-      display.height = Math.round(h * dpr);
-      display.style.width = w + "px";
-      display.style.height = h + "px";
+      display!.width = Math.round(w * dpr);
+      display!.height = Math.round(h * dpr);
+      display!.style.width = w + "px";
+      display!.style.height = h + "px";
 
-      const cellW = display.width / cols;
-      const cellH = display.height / rows;
+      const cellW = display!.width / cols;
+      const cellH = display!.height / rows;
       dimsRef.current = { cols, rows, cellW, cellH };
 
       const fontPx = Math.max(4, Math.round(cellH));
-      dCtx.font = `${fontPx}px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace`;
-      dCtx.textBaseline = "top";
-    };
+      dCtx!.font = `${fontPx}px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace`;
+      dCtx!.textBaseline = "top";
+      return true;
+    }
+
+    // Start video as soon as possible — don't wait for metadata.
+    // autoPlay + muted + playsInline is enough for browsers to start.
+    void video.play().catch(() => {});
 
     const onMeta = () => {
       layout();
@@ -77,14 +81,22 @@ export function VideoAscii({
       void video.play().catch(() => {});
     };
     video.addEventListener("loadedmetadata", onMeta);
+    // If metadata already loaded before we attached the listener:
+    if (video.readyState >= 1) onMeta();
 
-    const ro = new ResizeObserver(layout);
+    const ro = new ResizeObserver(() => { layout(); });
     ro.observe(wrap);
 
     const charsetLen = charset.length - 1;
 
     const tick = () => {
       const { cols, rows, cellW, cellH } = dimsRef.current;
+
+      // If layout hasn't run yet (wrapper was 0×0 at mount), retry now.
+      if (cols === 0) {
+        if (layout()) setReady(true);
+      }
+
       if (
         video.readyState >= 2 &&
         cols > 0 &&
@@ -135,10 +147,12 @@ export function VideoAscii({
 
   return (
     <div ref={wrapRef} className={className} style={{ background: backgroundColor }}>
+      {/* No crossOrigin — same-origin asset, crossOrigin causes unnecessary
+          CORS preflight and can block autoplay in some browsers. */}
       <video
         ref={videoRef}
         src={src}
-        autoPlay loop muted playsInline crossOrigin="anonymous"
+        autoPlay loop muted playsInline
         className="sr-only absolute" aria-hidden="true"
       />
       <canvas ref={sampleRef} className="hidden" aria-hidden="true" />
