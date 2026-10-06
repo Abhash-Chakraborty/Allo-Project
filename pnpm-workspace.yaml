@@ -1,3 +1,10 @@
+# None of these install scripts are needed (Vercel optimises images itself).
+# pnpm 10.26+ reads allowBuilds; older releases read ignoredBuiltDependencies.
+allowBuilds:
+  msw: false
+  sharp: false
+  unrs-resolver: false
 ignoredBuiltDependencies:
+  - msw
   - sharp
   - unrs-resolver

@@ -75,9 +75,6 @@ export function SiteHeader({ className }: { className?: string }) {
           <Link href="/guide" className="nav-link">
             Guide
           </Link>
-          <Link href="/resume" className="nav-link">
-            Resume
-          </Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -128,7 +125,6 @@ export function SiteHeader({ className }: { className?: string }) {
                 { href: "/products", label: "Products" },
                 { href: "/docs", label: "Docs" },
                 { href: "/guide", label: "Guide" },
-                { href: "/resume", label: "Resume" },
               ].map((item) => (
                 <Link
                   key={item.href}

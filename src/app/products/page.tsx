@@ -41,7 +41,7 @@ export default async function ProductsPage() {
 
           {loadError ? (
             <div role="alert" className="rounded-lg border border-hairline-light bg-canvas-light p-8 max-w-2xl">
-              <p className="text-body-strong">Couldn't reach inventory</p>
+              <p className="text-body-strong">Couldn&apos;t reach inventory</p>
               <p className="text-body-md text-shade-60 mt-2">{loadError}</p>
             </div>
           ) : products.length === 0 ? (

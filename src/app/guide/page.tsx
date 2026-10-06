@@ -168,7 +168,7 @@ INSERT INTO reservations (...) RETURNING *;`}</Code>
             <Problem n={7} title="Product listing — paginated grid">
               <p>
                 Products are fetched server-side (Next.js App Router, <Tag>force-dynamic</Tag>).
-                The grid renders 21 items initially; a "Load more" button reveals the next batch
+                The grid renders 21 items initially; a &ldquo;Load more&rdquo; button reveals the next batch
                 client-side from the already-fetched array — no extra network request.
                 Cards animate in with a staggered fade using <Tag>motion/react</Tag>.
               </p>
@@ -177,7 +177,7 @@ INSERT INTO reservations (...) RETURNING *;`}</Code>
             <Problem n={8} title="Product detail — sticky reserve panel">
               <p>
                 The detail page shows stock broken down by warehouse. The reserve panel is sticky
-                on desktop. Clicking "Reserve" opens a modal that calls{" "}
+                on desktop. Clicking &ldquo;Reserve&rdquo; opens a modal that calls{" "}
                 <Tag>POST /api/reservations</Tag> and redirects to the checkout page on success.
                 The modal closes on Escape or outside click — no close button per design spec.
               </p>
@@ -200,12 +200,14 @@ INSERT INTO reservations (...) RETURNING *;`}</Code>
               Three independent mechanisms ensure this:
             </p>
 
-            <Problem n={10} title="Layer 1 — Vercel Cron">
+            <Problem n={10} title="Layer 1 — pg_cron inside Postgres">
               <p>
-                <Tag>vercel.json</Tag> schedules <Tag>GET /api/cron/expire-reservations</Tag> every
-                minute. The handler calls <Tag>expire_reservations()</Tag> which bulk-updates all
-                rows where <code>status = &apos;pending&apos;</code> and{" "}
-                <code>expires_at ≤ now()</code>, returning reserved units to inventory.
+                Supabase <Tag>pg_cron</Tag> runs <Tag>expire_reservations()</Tag> every minute
+                (<Tag>0004_cron.sql</Tag>). It bulk-updates all rows where{" "}
+                <code>status = &apos;pending&apos;</code> and <code>expires_at ≤ now()</code>,
+                returning reserved units to inventory. <Tag>FOR UPDATE SKIP LOCKED</Tag> means two
+                overlapping sweeps never block each other. <Tag>GET /api/cron/expire-reservations</Tag>{" "}
+                runs the same function on demand, behind <Tag>CRON_SECRET</Tag>.
               </p>
             </Problem>
 
@@ -213,7 +215,7 @@ INSERT INTO reservations (...) RETURNING *;`}</Code>
               <p>
                 Every <Tag>GET /api/reservations/:id</Tag> call checks the timestamp inline and
                 expires the reservation if needed before returning. This means a reservation is
-                never served as "pending" after its TTL, even if the cron hasn't run yet.
+                never served as &ldquo;pending&rdquo; after its TTL, even if the cron hasn&apos;t run yet.
               </p>
             </Problem>
 

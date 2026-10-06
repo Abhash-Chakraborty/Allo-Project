@@ -76,6 +76,6 @@ async function handle(request: NextRequest) {
   }
 }
 
-// Vercel Cron uses GET; manual invocation can use either.
+// External schedulers usually send GET; manual invocation can use either.
 export const GET = handle;
 export const POST = handle;
